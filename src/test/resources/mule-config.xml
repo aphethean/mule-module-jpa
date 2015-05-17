@@ -31,74 +31,74 @@
 
     </spring:beans>
 
-    <jpa:config entityManagerFactory-ref="entityManagerFactory"/>
+    <jpa:config name="test" entityManagerFactory-ref="entityManagerFactory"/>
 
     <flow name="testInsert">
         <transactional>
-            <jpa:persist entity-ref="#[payload:]"/>
+            <jpa:persist config-ref="test" entity-ref="#[payload:]"/>
         </transactional>
     </flow>
 
     <flow name="testUpsert">
         <transactional>
-            <jpa:upsert entity-ref="#[payload]" id-ref="#[payload.id]" fields="name"/>
+            <jpa:upsert config-ref="test" entity-ref="#[payload]" id-ref="#[payload.id]" fields="name"/>
         </transactional>
     </flow>
 
     <flow name="testDetach">
         <transactional>
-            <jpa:detach entity-ref="#[payload:]"/>
+            <jpa:detach config-ref="test" entity-ref="#[payload:]"/>
         </transactional>
     </flow>
 
     <flow name="testMerge">
         <transactional>
-            <jpa:merge entity-ref="#[payload:]"/>
+            <jpa:merge config-ref="test" entity-ref="#[payload:]"/>
         </transactional>
     </flow>
 
     <flow name="testFind">
         <transactional>
-            <jpa:find entityClass="domain.Dog" id-ref="#[payload:]"/>
+            <jpa:find config-ref="test" entityClass="domain.Dog" id-ref="#[payload:]"/>
         </transactional>
     </flow>
 
     <flow name="testQuery">
         <transactional>
-            <jpa:query statement="from Dog dog where dog.name = 'Cujo'"/>
+            <jpa:query config-ref="test" statement="from Dog dog where dog.name = 'Cujo'"/>
         </transactional>
     </flow>
 
     <flow name="testQueryWithListParameters">
         <transactional>
-            <jpa:query statement="from Dog dog where dog.name = ?" queryParameters-ref="#[payload:]"/>
+            <jpa:query config-ref="test" statement="from Dog dog where dog.name = ?" queryParameters-ref="#[payload:]"/>
         </transactional>
     </flow>
 
     <flow name="testQueryWithMapParameters">
         <transactional>
-            <jpa:query statement="from Dog dog where dog.name = :name" queryParameters-ref="#[payload:]"/>
+            <jpa:query config-ref="test" statement="from Dog dog where dog.name = :name" queryParameters-ref="#[payload:]"/>
         </transactional>
     </flow>
 
     <flow name="testNamedQuery">
         <transactional>
-            <jpa:query namedQuery='findDogsByName' queryParameters-ref="#[payload:]"/>
+            <jpa:query config-ref="test" namedQuery='findDogsByName' queryParameters-ref="#[payload:]"/>
         </transactional>
     </flow>
 
     <flow name="testTransactionalInsertAndQuery">
         <transactional>
-            <jpa:persist entity-ref="#[payload:]"/>
-            <jpa:query statement="from Dog dog where dog.name = 'Cujo'"/>
+            <jpa:persist config-ref="test" entity-ref="#[payload:]"/>
+            <jpa:query config-ref="test" statement="from Dog dog where dog.name = 'Cujo'"/>
         </transactional>
     </flow>
 
     <flow name="testPersistenceContext">
         <transactional>
-            <jpa:persist entity-ref="#[payload:]"/>
+            <jpa:persist config-ref="test" entity-ref="#[payload:]"/>
             <component class="service.DogServiceImpl"/>
-            <jpa:query statement="from Dog dog where dog.name = 'Cujo'"/>
+            <jpa:query config-ref="test" statement="from Dog dog where dog.name = 'Cujo'"/>
         </transactional>
     </flow>
 
